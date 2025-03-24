@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Bookings</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Bookings</h1>
+        {% for booking in bookings %}
+            <div class="booking-card">
+                <div>
+                    <strong>Room {{ booking.room.id }}: {{ booking.room.description }}</strong><br>
+                    Check-in: {{ booking.date_start }}<br>
+                    Check-out: {{ booking.date_end }}
+                </div>
+                <a href="{% url 'delete_booking' booking.id %}">Cancel</a>
+            </div>
+        {% empty %}
+            <p>No bookings yet.</p>
+        {% endfor %}
+        <a href="{% url 'rooms_list' %}">Book Another Room</a>
+    </div>
+</body>
+</html>

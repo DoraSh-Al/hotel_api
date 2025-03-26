@@ -6,7 +6,7 @@ from hotel.config import settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = settings.SECRET_KEY
+SECRET_KEY = settings.secret_key
 
 DEBUG = True
 
@@ -55,7 +55,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hotel.wsgi.application'
 
 DATABASES = {
-    "default": dj_database_url.config(default=settings.DATABASE_URL, conn_max_age=600)
+    "default": dj_database_url.config(default=settings.database_url, conn_max_age=600)
 }
 
 AUTH_PASSWORD_VALIDATORS = [

@@ -1,17 +1,18 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DB_NAME: str
-    DB_USER: str
-    DB_PASSWORD: str
-    DB_HOST: str
-    DB_PORT: str
-    SECRET_KEY: str
-    DATABASE_URL: str
+    database_url: str
+    secret_key: str
+    db_name: str
+    db_user: str
+    db_password: str
+    db_host: str
+    db_port: str
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+    )
 
 settings = Settings()

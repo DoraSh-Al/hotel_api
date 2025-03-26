@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Room(models.Model):
     description = models.TextField()  # Описание номера
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)  # Цена за ночь

@@ -1,7 +1,14 @@
 from django.urls import path
+
 from rooms.views import (
-    RoomListCreateView, RoomDeleteView, BookingListCreateView, BookingDeleteView,
-    rooms_list, bookings_list, delete_room, delete_booking
+    BookingDeleteView,
+    BookingListCreateView,
+    RoomDeleteView,
+    RoomListCreateView,
+    bookings_list,
+    delete_booking,
+    delete_room,
+    rooms_list,
 )
 
 urlpatterns = [

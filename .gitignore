@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+.idea/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.env
+postgres_data/

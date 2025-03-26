@@ -1,9 +1,10 @@
-from rest_framework import generics, filters
+from django.shortcuts import redirect, render
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from .models import Room, Booking
-from .serializers import RoomSerializer, BookingSerializer
+from rest_framework import filters, generics
+
+from .models import Booking, Room
+from .serializers import BookingSerializer, RoomSerializer
+
 
 # API Views
 class RoomListCreateView(generics.ListCreateAPIView):

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Booking</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Book Your Stay</h1>
+        <form method="POST" action="{% url 'bookings_add' %}">
+            {% csrf_token %}
+            <label for="room_id">Choose Your Room:</label>
+            <select name="room_id" required>
+                <option value="">-- Select a Room --</option>
+                {% for room in rooms %}
+                    <option value="{{ room.id }}">{{ room.description }} - {{ room.price_per_night }} $/night</option>
+                {% empty %}
+                    <option value="" disabled>No rooms available</option>
+                {% endfor %}
+            </select>
+            <label for="date_start">Check-in Date:</label>
+            <input type="date" name="date_start" required>
+            <label for="date_end">Check-out Date:</label>
+            <input type="date" name="date_end" required>
+            <button type="submit">Book Now</button>
+        </form>
+        <a href="{% url 'bookings_list' %}">View Your Bookings</a>
+    </div>
+</body>
+</html>

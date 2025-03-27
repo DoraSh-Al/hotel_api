@@ -41,9 +41,6 @@ jobs:
         DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}
         PYTHONPATH: .
       run: |
-        # Экранируем DATABASE_URL, заменяя ! на \!
-        ESCAPED_DATABASE_URL=$(echo "$DATABASE_URL" | sed 's/!/\\!/g')
-        export DATABASE_URL="$ESCAPED_DATABASE_URL"
         echo "Using DATABASE_URL=$DATABASE_URL"  # Отладочный вывод
         # Выводим PYTHONPATH для отладки
         echo "PYTHONPATH=$PYTHONPATH"

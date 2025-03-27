@@ -38,16 +38,13 @@ jobs:
     - name: Run tests
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: postgres
-        DB_PORT: ${{ secrets.DB_PORT }}
+        DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@postgres:5432/${{ secrets.DB_NAME }}
       run: |
-        # Экранируем DB_PASSWORD, заменяя ! на \!
-        ESCAPED_DB_PASSWORD=$(echo "$DB_PASSWORD" | sed 's/!/\\!/g')
-        export DATABASE_URL="postgresql://$DB_USER:$ESCAPED_DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
-        echo "DATABASE_URL=$DATABASE_URL"  # Отладочный вывод
+        # Экранируем DATABASE_URL, заменяя ! на \!
+        ESCAPED_DATABASE_URL=$(echo "$DATABASE_URL" | sed 's/!/\\!/g')
+        export DATABASE_URL="$ESCAPED_DATABASE_URL"
+        echo "Using DATABASE_URL=$DATABASE_URL"  # Отладочный вывод
+        poetry run python src/hotel/manage.py migrate
         poetry run pytest
     - name: Run linting
       run: |

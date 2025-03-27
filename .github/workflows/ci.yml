@@ -9,6 +9,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -20,9 +34,19 @@ jobs:
         curl -sSL https://install.python-poetry.org | python3 -
     - name: Install dependencies
       run: |
-        poetry install
+        poetry install --no-root
     - name: Run tests
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: postgres
+        DB_PORT: 5432
       run: |
+        # Экранируем DB_PASSWORD, заменяя ! на \!
+        ESCAPED_DB_PASSWORD=$(echo "$DB_PASSWORD" | sed 's/!/\\!/g')
+        export DATABASE_URL="postgresql://$DB_USER:$ESCAPED_DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
         poetry run pytest
     - name: Run linting
       run: |

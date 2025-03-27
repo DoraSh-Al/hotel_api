@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     services:
-      postgres:
+      db:
         image: postgres:13
         env:
           POSTGRES_USER: ${{ secrets.DB_USER }}
@@ -38,12 +38,19 @@ jobs:
     - name: Run tests
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@postgres:5432/${{ secrets.DB_NAME }}
+        DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@db:5432/${{ secrets.DB_NAME }}
+        PYTHONPATH: .
       run: |
         # Экранируем DATABASE_URL, заменяя ! на \!
         ESCAPED_DATABASE_URL=$(echo "$DATABASE_URL" | sed 's/!/\\!/g')
         export DATABASE_URL="$ESCAPED_DATABASE_URL"
         echo "Using DATABASE_URL=$DATABASE_URL"  # Отладочный вывод
+        # Выводим PYTHONPATH для отладки
+        echo "PYTHONPATH=$PYTHONPATH"
+        # Проверяем sys.path
+        poetry run python -c "import sys; print(sys.path)"
+        # Проверяем подключение к базе данных
+        psql "$DATABASE_URL" -c "SELECT 1;"
         poetry run python src/hotel/manage.py migrate
         poetry run pytest
     - name: Run linting

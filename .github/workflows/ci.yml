@@ -42,11 +42,12 @@ jobs:
         DB_USER: ${{ secrets.DB_USER }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_HOST: postgres
-        DB_PORT: 5432
+        DB_PORT: ${{ secrets.DB_PORT }}
       run: |
         # Экранируем DB_PASSWORD, заменяя ! на \!
         ESCAPED_DB_PASSWORD=$(echo "$DB_PASSWORD" | sed 's/!/\\!/g')
         export DATABASE_URL="postgresql://$DB_USER:$ESCAPED_DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
+        echo "DATABASE_URL=$DATABASE_URL"  # Отладочный вывод
         poetry run pytest
     - name: Run linting
       run: |

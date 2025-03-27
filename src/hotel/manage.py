@@ -3,10 +3,13 @@
 import os
 import sys
 
+# Добавляем корень проекта в sys.path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hotel.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.hotel.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -17,6 +20,5 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

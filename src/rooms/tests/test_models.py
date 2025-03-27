@@ -1,6 +1,6 @@
 import pytest
 
-from rooms.models import Booking, Room
+from src.rooms.models import Booking, Room
 
 
 @pytest.mark.django_db

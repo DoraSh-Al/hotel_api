@@ -1,6 +1,6 @@
 from django.urls import path
 
-from rooms.views import (
+from src.rooms.views import (
     BookingDeleteView,
     BookingListCreateView,
     RoomDeleteView,
